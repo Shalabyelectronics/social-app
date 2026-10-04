@@ -1,5 +1,7 @@
 # Social App (React + Vite)
 
+[![CI](https://github.com/Shalabyelectronics/social-app/actions/workflows/ci.yml/badge.svg)](https://github.com/Shalabyelectronics/social-app/actions/workflows/ci.yml)
+
 A modern social media web app built with React, Vite, HeroUI, and Tailwind CSS.
 
 **[Live Demo](https://socail-app-zeta.vercel.app)** · Click **Try the demo** on the login page to look around without signing up.
@@ -24,6 +26,21 @@ A modern social media web app built with React, Vite, HeroUI, and Tailwind CSS.
    - `npm run build`
 4. Preview production build:
    - `npm run preview`
+5. Run the tests:
+   - `npm test` (or `npm run test:watch` while developing)
+
+### Tests and CI
+
+Tests use **Vitest** and **React Testing Library** (jsdom). They cover:
+
+- Login: validation messages, successful login (token + redirect), server errors, and the demo button
+- Route guards: visitors are sent to `/login`, logged-in users away from it
+- Auth state: loading the saved session, logout, and ignoring a late profile response for an old token
+- Change Password: normal flow, and disabled for the shared demo account
+- Comments: a regression test for a crash when the first comment appeared
+- Form schemas and error-message formatting
+
+GitHub Actions runs lint, tests and the production build on every push and pull request (`.github/workflows/ci.yml`).
 
 ### Environment Variables
 
