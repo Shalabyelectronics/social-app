@@ -2,6 +2,8 @@
 
 A modern social media web app built with React, Vite, HeroUI, and Tailwind CSS.
 
+**[Live Demo](https://socail-app-zeta.vercel.app)** · Click **Try the demo** on the login page to look around without signing up.
+
 ## Tech Stack
 
 - React 19
@@ -22,6 +24,18 @@ A modern social media web app built with React, Vite, HeroUI, and Tailwind CSS.
    - `npm run build`
 4. Preview production build:
    - `npm run preview`
+
+### Environment Variables
+
+Copy `.env.example` to `.env.local` and fill it in:
+
+| Variable | Purpose |
+|---|---|
+| `VITE_BASE_URL` | Base URL of the social media API |
+| `VITE_DEMO_EMAIL` | Optional. Email of a shared demo account |
+| `VITE_DEMO_PASSWORD` | Optional. Password of that demo account |
+
+When both demo variables are set, the login page shows a **Try the demo** button that logs in with that account, and the Change Password page is disabled for it so no visitor can lock the others out. Vite builds these values into the browser bundle, so only use a throwaway account created for the demo.
 
 ## Core Features
 

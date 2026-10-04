@@ -14,12 +14,15 @@ import { changePasswordSchema } from "../../lib/validationSchemas/authSchema";
 import { changePasswordService } from "../../services/authServices";
 import { AuthContext } from "../AuthContext/AuthContextProvider";
 import { toast } from "react-toastify";
+import { isDemoUser } from "../../lib/demo";
 
 export default function ChangePassword() {
   const [isVisibleCurrent, setIsVisibleCurrent] = useState(false);
   const [isVisibleNew, setIsVisibleNew] = useState(false);
   const [isVisibleConfirm, setIsVisibleConfirm] = useState(false);
-  const { token, setToken } = useContext(AuthContext);
+  const { token, setToken, user } = useContext(AuthContext);
+  // Visitors share the demo account, so one of them must not lock out the rest
+  const isDemo = isDemoUser(user);
 
   const toggleVisibilityCurrent = () => setIsVisibleCurrent(!isVisibleCurrent);
   const toggleVisibilityNew = () => setIsVisibleNew(!isVisibleNew);
@@ -43,6 +46,10 @@ export default function ChangePassword() {
   const onSubmit = async (data) => {
     if (!token) {
       toast.error("Please login first");
+      return;
+    }
+    if (isDemo) {
+      toast.info("Password changes are turned off for the demo account");
       return;
     }
 
@@ -76,6 +83,12 @@ export default function ChangePassword() {
         <p className="text-sm text-gray-500 dark:text-gray-400 text-center">
           Secure your account with a new password
         </p>
+        {isDemo && (
+          <p className="text-sm text-amber-700 bg-amber-50 dark:bg-amber-900/30 dark:text-amber-300 rounded-lg px-4 py-2 text-center">
+            You're using the shared demo account, so password changes are
+            turned off.
+          </p>
+        )}
       </CardHeader>
 
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -178,6 +191,7 @@ export default function ChangePassword() {
           <Button
             type="submit"
             isLoading={isSubmitting}
+            isDisabled={isDemo}
             className="w-full bg-[#5E17EB] hover:bg-[#FF3131] text-white font-medium py-6 rounded-xl transition-colors duration-300 shadow-md text-md"
           >
             Update Password

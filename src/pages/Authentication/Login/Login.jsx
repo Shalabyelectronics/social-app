@@ -10,15 +10,18 @@ import { loginService } from "../../../services/authServices";
 import { Link, useNavigate } from "react-router";
 import { AuthContext } from "../../../components/AuthContext/AuthContextProvider";
 import { formatErrorMessage } from "../../../lib/tools";
+import { demoCredentials } from "../../../lib/demo";
 
 export default function Login() {
   const [isShowPass, setIsShowPass] = useState(false);
+  const [isDemoLoading, setIsDemoLoading] = useState(false);
   const { token, setToken, isAuthReady } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm({
     mode: "onBlur",
@@ -41,6 +44,19 @@ export default function Login() {
       toast.error(formatErrorMessage(errorMessage));
     }
   };
+
+  // Fill the form with the shared demo account and log in
+  const loginWithDemo = async () => {
+    setValue("email", demoCredentials.email);
+    setValue("password", demoCredentials.password);
+    setIsDemoLoading(true);
+    try {
+      await submit(demoCredentials);
+    } finally {
+      setIsDemoLoading(false);
+    }
+  };
+
   return (
     <>
       <h2 className="text-2xl md:text-3xl font-bold mb-2">
@@ -94,12 +110,35 @@ export default function Login() {
           <Button
             type="submit"
             isLoading={isSubmitting}
+            isDisabled={isDemoLoading}
             className="w-full text-center cursor-pointer hover:bg-blue-700 transition-colors duration-300 py-2 rounded-lg bg-blue-600 text-white"
           >
             Login
           </Button>
         </div>
       </form>
+      {demoCredentials && (
+        <div className="w-full -mt-4 mb-6">
+          <div className="flex items-center gap-3 mb-4 text-sm text-gray-400">
+            <span className="h-px flex-1 bg-gray-200" />
+            or
+            <span className="h-px flex-1 bg-gray-200" />
+          </div>
+          <Button
+            type="button"
+            variant="bordered"
+            onPress={loginWithDemo}
+            isLoading={isDemoLoading}
+            isDisabled={isSubmitting}
+            className="w-full py-2 rounded-lg border-blue-600 text-blue-600 font-semibold hover:bg-blue-50 transition-colors duration-300"
+          >
+            Try the demo
+          </Button>
+          <p className="text-center text-xs text-gray-500 mt-2">
+            No sign-up needed. You'll use a shared demo account.
+          </p>
+        </div>
+      )}
       <p className="text-center text-sm md:text-base pb-4">
         Please register if you do not have an account?{" "}
         <Link className="text-blue-600 font-semibold" to="/register">
