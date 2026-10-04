@@ -28,7 +28,7 @@ export default function NotificationsProvider({ children }) {
     try {
       const response = await getUnreadCountService(token);
       setUnreadCount(response.data.data.unreadCount);
-    } catch (error) {
+    } catch {
       console.error("Error getting unreadCount");
     } finally {
       setIsUnreadCountLoading(false);
@@ -40,7 +40,7 @@ export default function NotificationsProvider({ children }) {
       try {
         const response = await getNotificationsService(token);
         setNotifications(response.data.data.notifications);
-      } catch (error) {
+      } catch {
         console.error("Error getting notifications");
       }
     };

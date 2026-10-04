@@ -21,7 +21,7 @@ export default function PostDetails() {
   const [hasMoreComments, setHasMoreComments] = useState(true);
   const [isLoadingComments, setIsLoadingComments] = useState(false);
   const [isLoadingMoreComments, setIsLoadingMoreComments] = useState(false);
-  const [isLoadingCreateCommet, setIsLoadingCreateCommet] = useState(false);
+  const [, setIsLoadingCreateCommet] = useState(false);
 
   useEffect(() => {
     const getPostDetails = async () => {
@@ -106,7 +106,7 @@ export default function PostDetails() {
   const onCreateComment = async (payLoad) => {
     try {
       setIsLoadingCreateCommet(true);
-      const response = await createCommentService(token, payLoad, id);
+      await createCommentService(token, payLoad, id);
       toast.success("Comment created successfully!");
 
       // Refresh comments after successful creation

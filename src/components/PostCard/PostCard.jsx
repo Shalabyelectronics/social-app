@@ -49,7 +49,6 @@ export default function PostCard({
   onRefetch,
   onUnbookmark,
 }) {
-  if (!post) return null;
   const navigate = useNavigate();
 
   const {
@@ -152,7 +151,7 @@ export default function PostCard({
     try {
       const response = await bookmarkPostService(token, post._id);
 
-      const { bookmarked, bookmarksCount } = response.data.data;
+      const { bookmarked } = response.data.data;
 
       setIsBookmarked(bookmarked);
 
@@ -239,13 +238,7 @@ export default function PostCard({
     }
   };
 
-  const handleUpdate = async ({
-    postId,
-    body,
-    image,
-    removeImage,
-    privacy,
-  }) => {
+  const handleUpdate = async ({ postId, body, image, privacy }) => {
     try {
       // Build payload for your update service
       // If your backend supports removing image via empty string or specific field,
@@ -297,6 +290,9 @@ export default function PostCard({
   const textPostBackgroundClass = getStableBackgroundClass(
     post?._id || post?.id,
   );
+
+  // Early return only after every hook has run, so the hook order never changes
+  if (!post) return null;
 
   return (
     <Card className="w-full shadow-lg hover:shadow-xl transition-all duration-300 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700 mb-4">

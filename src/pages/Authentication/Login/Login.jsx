@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useContext, useEffect, useRef, useState } from "react";
+import React, { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { LuEye } from "react-icons/lu";
 import { LuEyeClosed } from "react-icons/lu";
@@ -15,7 +15,7 @@ import { demoCredentials } from "../../../lib/demo";
 export default function Login() {
   const [isShowPass, setIsShowPass] = useState(false);
   const [isDemoLoading, setIsDemoLoading] = useState(false);
-  const { token, setToken, isAuthReady } = useContext(AuthContext);
+  const { setToken } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const {

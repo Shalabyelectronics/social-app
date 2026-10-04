@@ -217,7 +217,7 @@ export default function PostCreation({ onCreatePost }) {
         backdrop="blur"
       >
         <ModalContent>
-          {(onClose) => (
+          {() => (
             <>
               <ModalHeader className="flex flex-col gap-1 text-gray-900 dark:text-white">
                 Image Preview

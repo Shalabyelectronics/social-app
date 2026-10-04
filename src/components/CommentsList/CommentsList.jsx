@@ -49,6 +49,21 @@ export default function CommentsList({
     setPreviewImageUrl("");
   };
 
+  useEffect(() => {
+    if (!comments) return;
+    const likedMap = {};
+    const countMap = {};
+    comments.forEach((comment) => {
+      const likes = comment.likes || [];
+      const userId = user?.id || user?._id;
+      likedMap[comment._id] = userId ? likes.includes(userId) : false;
+      countMap[comment._id] = comment.likesCount ?? likes.length ?? 0;
+    });
+    setLikedByCommentId(likedMap);
+    setLikeCountByCommentId(countMap);
+  }, [comments, user]);
+
+  // Early return only after every hook has run, so the hook order never changes
   if (!comments || comments.length === 0) {
     return (
       <div className="text-gray-500 text-sm py-4 text-center italic">
@@ -70,20 +85,6 @@ export default function CommentsList({
       .replace(/\//g, "-")
       .replace(", ", " | ");
   };
-
-  useEffect(() => {
-    if (!comments) return;
-    const likedMap = {};
-    const countMap = {};
-    comments.forEach((comment) => {
-      const likes = comment.likes || [];
-      const userId = user?.id || user?._id;
-      likedMap[comment._id] = userId ? likes.includes(userId) : false;
-      countMap[comment._id] = comment.likesCount ?? likes.length ?? 0;
-    });
-    setLikedByCommentId(likedMap);
-    setLikeCountByCommentId(countMap);
-  }, [comments, user]);
 
   const toggleLikeCommentHandler = async (commentId) => {
     try {

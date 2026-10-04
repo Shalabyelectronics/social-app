@@ -1,18 +1,11 @@
-import React, { useContext, useEffect } from "react";
-import { useNavigate } from "react-router";
+import React, { useContext } from "react";
+import { Navigate } from "react-router";
 import { AuthContext } from "../AuthContext/AuthContextProvider";
 
+// Login and register pages; logged-in users go to the feed instead
 export default function AuthProtextedRoutes({ children }) {
-  const { token, isAuthReady } = useContext(AuthContext);
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (!isAuthReady) return;
-    if (token) {
-      navigate("/", { replace: true });
-    }
-  }, [token, isAuthReady, navigate]);
+  const { token } = useContext(AuthContext);
 
-  if (!isAuthReady) return null;
-
+  if (token) return <Navigate to="/" replace />;
   return children;
 }

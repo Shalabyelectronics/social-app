@@ -40,13 +40,13 @@ export const registerSchema = z
     message: "Passwords not matched",
   });
 
+// No max length here: Change Password allows long passwords, and a cap would lock those users out
 export const loginSchema = z.object({
   email: z.string().nonempty("Email is required").email("Invalid Email"),
   password: z
     .string()
     .nonempty("Password is required")
-    .min(4, "Password not less than 4 digts")
-    .max(10, "Password not exceed 10 digits"),
+    .min(4, "Password not less than 4 digts"),
 });
 
 export const changePasswordSchema = z

@@ -24,6 +24,19 @@ export default defineConfig([
     },
     rules: {
       'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }],
+      // Context objects are exported next to their provider components
+      'react-refresh/only-export-components': [
+        'error',
+        {
+          allowConstantExport: true,
+          allowExportNames: ['AuthContext', 'FeedContext', 'NotificationsContext'],
+        },
+      ],
     },
+  },
+  {
+    // Test files and helpers aren't hot-reloaded components
+    files: ['**/*.test.{js,jsx}', 'src/test/**'],
+    rules: { 'react-refresh/only-export-components': 'off' },
   },
 ])
